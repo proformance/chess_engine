@@ -3,11 +3,11 @@
 #include <stdio.h>
 
 /*!
-   \brief Get possible moves from the current position
-   \param Pointer to the board used
-   \param What piece to move
-   \param The current position of the piece on the board
-   \return Array of possible moves
+\brief Get possible moves from the current position
+\param Pointer to the board used
+\param What piece to move
+\param The current position of the piece on the board
+\return Array of possible moves
 */
 int possibleMoves(Board* board, int piece, int pos, int* moves){
   int curRow = ROW(pos);
@@ -15,86 +15,71 @@ int possibleMoves(Board* board, int piece, int pos, int* moves){
   int num_moves = 0;
   int dir = DIRECTION(piece);
 
-  int rad;
-
   switch (PIECE(piece)) {
     case PAWN:
-      tryMove(board, curRow+dir, curCol, moves, &num_moves);
-      break;
+    tryMoveOnce(board, curRow+dir, curCol, moves, &num_moves);
+    break;
 
     case KNIGHT:
-      for (rad = -1; rad <= 1; rad+=2) {
-
-        tryMove(board, curRow+rad*2, curCol+1, moves, &num_moves);
-        tryMove(board, curRow+rad*2, curCol-1, moves, &num_moves);
-        tryMove(board, curRow+1, curCol+rad*2, moves, &num_moves);
-        tryMove(board, curRow-1, curCol+rad*2, moves, &num_moves);
-
-      }
-      break;
+    for (int i = -1; i <= 1; i+=2) {
+      tryMoveOnce(board, curRow+i*2, curCol+1, moves, &num_moves);
+      tryMoveOnce(board, curRow+i*2, curCol-1, moves, &num_moves);
+      tryMoveOnce(board, curRow+1, curCol+i*2, moves, &num_moves);
+      tryMoveOnce(board, curRow-1, curCol+i*2, moves, &num_moves);
+    }
+    break;
 
     case BISHOP:
-      for (rad = 1; rad < BOARD_SIZE; rad++) {
+    TRY_MOVE_DIAG_NE(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DIAG_NW(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DIAG_SE(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DIAG_SW(board, curRow, curCol, moves, &num_moves);
+    break;
 
-        tryMove(board, curRow+rad, curCol+rad, moves, &num_moves);
-        tryMove(board, curRow+rad, curCol-rad, moves, &num_moves);
-        tryMove(board, curRow-rad, curCol+rad, moves, &num_moves);
-        tryMove(board, curRow-rad, curCol-rad, moves, &num_moves);
+    case ROOK:
 
-      }
-      break;
+    TRY_MOVE_UP(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DOWN(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_LEFT(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_RIGHT(board, curRow, curCol, moves, &num_moves);
 
-      case ROOK:
-        for (rad = 1; rad < BOARD_SIZE; rad++) {
+    break;
 
-          tryMove(board, curRow+rad, curCol, moves, &num_moves);
-          tryMove(board, curRow-rad, curCol, moves, &num_moves);
-          tryMove(board, curRow, curCol+rad, moves, &num_moves);
-          tryMove(board, curRow, curCol-rad, moves, &num_moves);
+    case QUEEN:
 
-        }
-        break;
+    // same as bishop
+    TRY_MOVE_DIAG_NE(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DIAG_NW(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DIAG_SE(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DIAG_SW(board, curRow, curCol, moves, &num_moves);
 
-        case QUEEN:
-          for (rad = 1; rad < BOARD_SIZE; rad++) {
+    // same as rook
+    TRY_MOVE_UP(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_DOWN(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_LEFT(board, curRow, curCol, moves, &num_moves);
+    TRY_MOVE_RIGHT(board, curRow, curCol, moves, &num_moves);
 
-            // same as bishop
-            tryMove(board, curRow+rad, curCol+rad, moves, &num_moves);
-            tryMove(board, curRow+rad, curCol-rad, moves, &num_moves);
-            tryMove(board, curRow-rad, curCol+rad, moves, &num_moves);
-            tryMove(board, curRow-rad, curCol-rad, moves, &num_moves);
+    break;
 
-            // same as rook
-            tryMove(board, curRow+rad, curCol, moves, &num_moves);
-            tryMove(board, curRow-rad, curCol, moves, &num_moves);
-            tryMove(board, curRow, curCol+rad, moves, &num_moves);
-            tryMove(board, curRow, curCol-rad, moves, &num_moves);
+    case KING:
+    // same as bishop
+    tryMoveOnce(board, curRow+1, curCol+1, moves, &num_moves);
+    tryMoveOnce(board, curRow+1, curCol-1, moves, &num_moves);
+    tryMoveOnce(board, curRow-1, curCol+1, moves, &num_moves);
+    tryMoveOnce(board, curRow-1, curCol-1, moves, &num_moves);
 
-          }
-          break;
+    // same as rook
+    tryMoveOnce(board, curRow+1, curCol, moves, &num_moves);
+    tryMoveOnce(board, curRow-1, curCol, moves, &num_moves);
+    tryMoveOnce(board, curRow, curCol+1, moves, &num_moves);
+    tryMoveOnce(board, curRow, curCol-1, moves, &num_moves);
 
-          case KING:
-            // same as queen but only rad = 1
-            rad = 1;
-
-            // same as bishop
-            tryMove(board, curRow+rad, curCol+rad, moves, &num_moves);
-            tryMove(board, curRow+rad, curCol-rad, moves, &num_moves);
-            tryMove(board, curRow-rad, curCol+rad, moves, &num_moves);
-            tryMove(board, curRow-rad, curCol-rad, moves, &num_moves);
-
-            // same as rook
-            tryMove(board, curRow+rad, curCol, moves, &num_moves);
-            tryMove(board, curRow-rad, curCol, moves, &num_moves);
-            tryMove(board, curRow, curCol+rad, moves, &num_moves);
-            tryMove(board, curRow, curCol-rad, moves, &num_moves);
-
-            break;
+    break;
   }
   return num_moves;//number of moves
 }
 
-bool tryMove(Board* board, int row, int col, int* moves, int* num_moves){
+bool tryMoveOnce(Board* board, int row, int col, int* moves, int* num_moves){
   if(VALID_POS(row,col) && VACANT_POS(board,row,col)){
     moves[(*num_moves)++] = POS(row,col);
     return true;
@@ -105,6 +90,6 @@ bool tryMove(Board* board, int row, int col, int* moves, int* num_moves){
 void tryMoveRecursive(Board* board, int row, int col, int* moves, int* num_moves, int directionRow, int directionCol){
   if(VALID_POS(row,col) && VACANT_POS(board,row,col)){
     moves[(*num_moves)++] = POS(row,col);
-    tryMoveRecursive(board, row+1, col, moves, num_moves, directionRow, directionCol);
+    tryMoveRecursive(board, row+directionRow, col+directionCol, moves, num_moves, directionRow, directionCol);
   }
 }
