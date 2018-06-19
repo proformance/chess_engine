@@ -38,8 +38,8 @@ enum color{
 #define COLOR(x) ((x) & 0x10)
 
 #define POS(row,col) (row*BOARD_SIZE+col)
-#define VALID_POS(row,col) ((row >= 0 && row <= BOARD_SIZE) && \
-                           (col >= 0 && col <= BOARD_SIZE))
+#define VALID_POS(row,col) ((row >= 0 && row < BOARD_SIZE) && \
+                           (col >= 0 && col < BOARD_SIZE))
 
 #define DIRECTION(x) (PIECE(x)==BLACK ? -1 : 1)
 

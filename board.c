@@ -4,6 +4,7 @@
 
 void board_print(Board *board){
   for (int i = 0; i < BOARD_SIZE*BOARD_SIZE; i++) {
+    if(i%BOARD_SIZE==0){printf("\n");}
     int piece = PIECE(board->squares[i]);
     char c;
     switch (PIECE(piece)) {
@@ -29,8 +30,9 @@ void board_print(Board *board){
         c = 'K';
         break;
     }
-    printf("%c\n", c);
+    printf("%c ", c);
   }
+  printf("\n");
 }
 
 void board_set(Board *board, int pos, int piece){
@@ -67,5 +69,5 @@ void board_init(Board *board){
   for (unsigned char i = 0; i < 8; i++) {
     board_set(board, POS(6,i), WHITE_PAWN);
   }
-  
+
 }
