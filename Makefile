@@ -6,7 +6,7 @@ HEADERS=headers.h engine.h
 FILES=engine.c board.c move.c
 
 TEST=tests
-TESTFILES=test_move.c move.c
+TESTFILES=test_move.c move.c board.c
 
 all:main
 

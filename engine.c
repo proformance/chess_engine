@@ -14,7 +14,7 @@ int main(int argc, char const* argv[])
   board_print(&b);
 
   int* moves = (int*)malloc(sizeof(int)*64);
-  printf("number of moves: %d\n", possibleMoves(BLACK_PAWN, 4, moves));
+  printf("number of moves: %d\n", possibleMoves(&b, BLACK_BISHOP, POS(0,5), moves));
   return 0;
 
 }

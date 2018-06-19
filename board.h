@@ -41,6 +41,10 @@ enum color{
 #define VALID_POS(row,col) ((row >= 0 && row < BOARD_SIZE) && \
                            (col >= 0 && col < BOARD_SIZE))
 
+#define VACANT_POS(board,row,col) (board->squares[POS(row,col)] == EMPTY)
+
+#define GET_PIECE(board,row,col) (board->squares[POS(row,col)])
+
 #define DIRECTION(x) (PIECE(x)==BLACK ? -1 : 1)
 
 #define ROW(x) x/BOARD_SIZE

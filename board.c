@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+  Prints the current chess board
+*/
 void board_print(Board *board){
   for (int i = 0; i < BOARD_SIZE*BOARD_SIZE; i++) {
     if(i%BOARD_SIZE==0){printf("\n");}
@@ -35,14 +38,23 @@ void board_print(Board *board){
   printf("\n");
 }
 
+/*
+  Set a piece
+*/
 void board_set(Board *board, int pos, int piece){
   board->squares[pos] = piece;
 }
 
+/*
+  Set all places to empty, should be run on first run to remove rubbish values
+*/
 void board_clear(Board *board){
   memset(board, EMPTY, sizeof(Board));
 }
 
+/*
+  Set all pieces as a normal initial chess board
+*/
 void board_init(Board *board){
   // set black pieces
   board_set(board, POS(0,0), BLACK_ROOK);
