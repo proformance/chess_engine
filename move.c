@@ -18,23 +18,146 @@ int possibleMoves(int piece, int pos, int* moves){
         moves[num_moves++] = POS(curRow+dir,curCol);
       }
       break;
-    case BISHOP:
-      for (int i = -BOARD_SIZE; i < BOARD_SIZE; i++) {
 
-        if(!(i == ROW(pos) && i == COL(pos))){
-          if(VALID_POS(curRow+i,curCol+i)){
-            moves[num_moves++] = POS(curRow+i,curCol+i);
-            printf("%d,%d\n", curRow+i,curCol+i);
-          }
-          if(VALID_POS(curRow+i,curCol-i)){
-            moves[num_moves++] = POS(curRow+i,curCol+i);
-            printf("%d,%d\n", curRow+i,curCol-i);
-          }
-        }
+    case KNIGHT:
+      if(VALID_POS(curRow+dir,curCol+1)){
+        moves[num_moves++] = POS(curRow+dir,curCol+1);
       }
-      printf("row:%d\n", ROW(pos));
-      printf("col:%d\n", COL(pos));
+      if(VALID_POS(curRow+dir,curCol-1)){
+        moves[num_moves++] = POS(curRow+dir,curCol-1);
+      }
       break;
+
+    case BISHOP:
+      for (int rad = 1; rad < BOARD_SIZE; rad++) {
+
+        if(VALID_POS(curRow+rad,curCol+rad)){
+          moves[num_moves++] = POS(curRow+rad,curCol+rad);
+          printf("%d,%d\n", curRow+rad,curCol+rad);
+        }
+        if(VALID_POS(curRow+rad,curCol-rad)){
+          moves[num_moves++] = POS(curRow+rad,curCol-rad);
+          printf("%d,%d\n", curRow+rad,curCol-rad);
+        }
+        if(VALID_POS(curRow-rad,curCol+rad)){
+          moves[num_moves++] = POS(curRow-rad,curCol+rad);
+          printf("%d,%d\n", curRow-rad,curCol+rad);
+        }
+        if(VALID_POS(curRow-rad,curCol-rad)){
+          moves[num_moves++] = POS(curRow-rad,curCol-rad);
+          printf("%d,%d\n", curRow-rad,curCol-rad);
+        }
+
+      }
+      break;
+
+      case ROOK:
+        for (int rad = 1; rad < BOARD_SIZE; rad++) {
+
+          if(VALID_POS(curRow+rad,curCol)){
+            moves[num_moves++] = POS(curRow+rad,curCol);
+            printf("%d,%d\n", curRow+rad,curCol);
+          }
+          if(VALID_POS(curRow-rad,curCol)){
+            moves[num_moves++] = POS(curRow-rad,curCol);
+            printf("%d,%d\n", curRow-rad,curCol);
+          }
+          if(VALID_POS(curRow,curCol+rad)){
+            moves[num_moves++] = POS(curRow,curCol+rad);
+            printf("%d,%d\n", curRow,curCol+rad);
+          }
+          if(VALID_POS(curRow,curCol-rad)){
+            moves[num_moves++] = POS(curRow,curCol-rad);
+            printf("%d,%d\n", curRow,curCol-rad);
+          }
+
+        }
+        break;
+
+        case QUEEN:
+          for (int rad = 1; rad < BOARD_SIZE; rad++) {
+
+            // same as bishop
+            if(VALID_POS(curRow+rad,curCol+rad)){
+              moves[num_moves++] = POS(curRow+rad,curCol+rad);
+              printf("%d,%d\n", curRow+rad,curCol+rad);
+            }
+            if(VALID_POS(curRow+rad,curCol-rad)){
+              moves[num_moves++] = POS(curRow+rad,curCol-rad);
+              printf("%d,%d\n", curRow+rad,curCol-rad);
+            }
+            if(VALID_POS(curRow-rad,curCol+rad)){
+              moves[num_moves++] = POS(curRow-rad,curCol+rad);
+              printf("%d,%d\n", curRow-rad,curCol+rad);
+            }
+            if(VALID_POS(curRow-rad,curCol-rad)){
+              moves[num_moves++] = POS(curRow-rad,curCol-rad);
+              printf("%d,%d\n", curRow-rad,curCol-rad);
+            }
+
+            // same as rook
+            if(VALID_POS(curRow+rad,curCol)){
+              moves[num_moves++] = POS(curRow+rad,curCol);
+              printf("%d,%d\n", curRow+rad,curCol);
+            }
+            if(VALID_POS(curRow-rad,curCol)){
+              moves[num_moves++] = POS(curRow-rad,curCol);
+              printf("%d,%d\n", curRow-rad,curCol);
+            }
+            if(VALID_POS(curRow,curCol+rad)){
+              moves[num_moves++] = POS(curRow,curCol+rad);
+              printf("%d,%d\n", curRow,curCol+rad);
+            }
+            if(VALID_POS(curRow,curCol-rad)){
+              moves[num_moves++] = POS(curRow,curCol-rad);
+              printf("%d,%d\n", curRow,curCol-rad);
+            }
+
+          }
+          break;
+
+          case KING:
+            // same as queen but only rad = 1
+            int rad = 1
+
+            // same as bishop
+            if(VALID_POS(curRow+rad,curCol+rad)){
+              moves[num_moves++] = POS(curRow+rad,curCol+rad);
+              printf("%d,%d\n", curRow+rad,curCol+rad);
+            }
+            if(VALID_POS(curRow+rad,curCol-rad)){
+              moves[num_moves++] = POS(curRow+rad,curCol-rad);
+              printf("%d,%d\n", curRow+rad,curCol-rad);
+            }
+            if(VALID_POS(curRow-rad,curCol+rad)){
+              moves[num_moves++] = POS(curRow-rad,curCol+rad);
+              printf("%d,%d\n", curRow-rad,curCol+rad);
+            }
+            if(VALID_POS(curRow-rad,curCol-rad)){
+              moves[num_moves++] = POS(curRow-rad,curCol-rad);
+              printf("%d,%d\n", curRow-rad,curCol-rad);
+            }
+
+            // same as rook
+            if(VALID_POS(curRow+rad,curCol)){
+              moves[num_moves++] = POS(curRow+rad,curCol);
+              printf("%d,%d\n", curRow+rad,curCol);
+            }
+            if(VALID_POS(curRow-rad,curCol)){
+              moves[num_moves++] = POS(curRow-rad,curCol);
+              printf("%d,%d\n", curRow-rad,curCol);
+            }
+            if(VALID_POS(curRow,curCol+rad)){
+              moves[num_moves++] = POS(curRow,curCol+rad);
+              printf("%d,%d\n", curRow,curCol+rad);
+            }
+            if(VALID_POS(curRow,curCol-rad)){
+              moves[num_moves++] = POS(curRow,curCol-rad);
+              printf("%d,%d\n", curRow,curCol-rad);
+            }
+
+            }
+            break;
   }
   return num_moves;//number of moves
 }
