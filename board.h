@@ -36,6 +36,7 @@ enum color{
 
 #define PIECE(x) ((x) & 0x0F)
 #define COLOR(x) ((x) & 0x10)
+#define OTHER_COLOR(x) (COLOR(x) == BLACK ? WHITE : BLACK)
 
 #define POS(row,col) (row*BOARD_SIZE+col)
 #define VALID_POS(row,col) ((row >= 0 && row < BOARD_SIZE) && \
@@ -43,11 +44,11 @@ enum color{
 
 #define VACANT_POS(board,row,col) (board->squares[POS(row,col)] == EMPTY)
 
-#define CAN_ATTACK(board,piece,row,col) (COLOR(board->squares[POS(row,col)]) != COLOR(piece))
+#define CAN_ATTACK(board,piece,row,col) (!VACANT_POS(board,row,col) && COLOR(board->squares[POS(row,col)]) == OTHER_COLOR(piece))
 
 #define GET_PIECE(board,row,col) (board->squares[POS(row,col)])
 
-#define DIRECTION(x) (PIECE(x)==BLACK ? -1 : 1)
+#define DIRECTION(x) (COLOR(x)==BLACK ? 1 : -1)
 
 #define ROW(x) x/BOARD_SIZE
 #define COL(x) x%BOARD_SIZE

@@ -5,8 +5,12 @@
 #include "headers.h"
 
 int possibleMoves(Board* board, int piece, int pos, int* moves);
+void print_moves(int* moves, int num_moves);
 
-bool tryMoveOnce(Board* board, int row, int col, int* moves, int* numMoves);
+void tryMoveOnce_noAttack(Board* board, int row, int col, int* moves, int* numMoves);
+void tryMoveOnce_onlyAttack(Board* board, int piece, int row, int col, int* moves, int* num_moves);
+void tryMoveOnce_withAttack(Board* board, int piece, int row, int col, int* moves, int* num_moves);
+
 void tryMoveRecursive(Board* board, int piece, int row, int col, int* moves, int* num_moves, int directionRow, int directionCol);
 
 #define TRY_MOVE_UP(board, row, col, moves, num_moves) tryMoveRecursive(board, GET_PIECE(board,row,col), row+1, col, moves, num_moves, 1, 0)

@@ -2,7 +2,7 @@
 #include "move.h"
 #include "board.h"
 
-#define TEST_MOVE(var,eq,piece) cr_assert_eq(var, eq, "%s : number of moves %d == %d", piece, var, eq);
+#define TEST_MOVE(var,eq,piece) cr_assert_eq(var, eq, "%s : number of moves == %d, should be %d", piece, var, eq);
 
 int moves[BOARD_SIZE*BOARD_SIZE];
 Board b;
@@ -17,7 +17,7 @@ Test(moves, test_empty_board){
   /* EMPTY BOARD */
 
   // pawn
-  int numMoves = possibleMoves(&b, BLACK_PAWN, POS(0,0),moves);
+  int numMoves = possibleMoves(&b, BLACK_PAWN, POS(1,0),moves);
   TEST_MOVE(numMoves,1,"pawn")
   // ------
 
@@ -47,9 +47,11 @@ Test(moves, test_empty_board){
 }
 
 Test(moves, test_initial_board){
+
+  // set it like a normal initial chess board
   board_init(&b);
 
-  /* EMPTY BOARD */
+  /* INITIAL BOARD */
 
   // pawn
   int numMoves = possibleMoves(&b, BLACK_PAWN, POS(1,0),moves);

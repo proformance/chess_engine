@@ -17,15 +17,17 @@ int possibleMoves(Board* board, int piece, int pos, int* moves){
 
   switch (PIECE(piece)) {
     case PAWN:
-    tryMoveOnce(board, curRow+dir, curCol, moves, &num_moves);
+    tryMoveOnce_noAttack(board, curRow+dir, curCol, moves, &num_moves);
+    tryMoveOnce_onlyAttack(board, piece, curRow+dir, curCol+1, moves, &num_moves);
+    tryMoveOnce_onlyAttack(board, piece, curRow+dir, curCol-1, moves, &num_moves);
     break;
 
     case KNIGHT:
     for (int i = -1; i <= 1; i+=2) {
-      tryMoveOnce(board, curRow+i*2, curCol+1, moves, &num_moves);
-      tryMoveOnce(board, curRow+i*2, curCol-1, moves, &num_moves);
-      tryMoveOnce(board, curRow+1, curCol+i*2, moves, &num_moves);
-      tryMoveOnce(board, curRow-1, curCol+i*2, moves, &num_moves);
+      tryMoveOnce_withAttack(board, piece, curRow+i*2, curCol+1, moves, &num_moves);
+      tryMoveOnce_withAttack(board, piece, curRow+i*2, curCol-1, moves, &num_moves);
+      tryMoveOnce_withAttack(board, piece, curRow+1, curCol+i*2, moves, &num_moves);
+      tryMoveOnce_withAttack(board, piece, curRow-1, curCol+i*2, moves, &num_moves);
     }
     break;
 
@@ -63,28 +65,38 @@ int possibleMoves(Board* board, int piece, int pos, int* moves){
 
     case KING:
     // same as bishop
-    tryMoveOnce(board, curRow+1, curCol+1, moves, &num_moves);
-    tryMoveOnce(board, curRow+1, curCol-1, moves, &num_moves);
-    tryMoveOnce(board, curRow-1, curCol+1, moves, &num_moves);
-    tryMoveOnce(board, curRow-1, curCol-1, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow+1, curCol+1, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow+1, curCol-1, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow-1, curCol+1, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow-1, curCol-1, moves, &num_moves);
 
     // same as rook
-    tryMoveOnce(board, curRow+1, curCol, moves, &num_moves);
-    tryMoveOnce(board, curRow-1, curCol, moves, &num_moves);
-    tryMoveOnce(board, curRow, curCol+1, moves, &num_moves);
-    tryMoveOnce(board, curRow, curCol-1, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow+1, curCol, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow-1, curCol, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow, curCol+1, moves, &num_moves);
+    tryMoveOnce_withAttack(board, piece, curRow, curCol-1, moves, &num_moves);
 
     break;
   }
   return num_moves;//number of moves
 }
 
-bool tryMoveOnce(Board* board, int row, int col, int* moves, int* num_moves){
+void tryMoveOnce_noAttack(Board* board, int row, int col, int* moves, int* num_moves){
   if(VALID_POS(row,col) && VACANT_POS(board,row,col)){
     moves[(*num_moves)++] = POS(row,col);
-    return true;
   }
-  return false;
+}
+
+void tryMoveOnce_onlyAttack(Board* board, int piece, int row, int col, int* moves, int* num_moves){
+  if(VALID_POS(row,col) && CAN_ATTACK(board, piece, row, col)){
+    moves[(*num_moves)++] = POS(row,col);
+  }
+}
+
+void tryMoveOnce_withAttack(Board* board, int piece, int row, int col, int* moves, int* num_moves){
+  if(VALID_POS(row,col) && (VACANT_POS(board,row,col) || CAN_ATTACK(board, piece, row, col))){
+    moves[(*num_moves)++] = POS(row,col);
+  }
 }
 
 void tryMoveRecursive(Board* board, int piece, int row, int col, int* moves, int* num_moves, int directionRow, int directionCol){
@@ -93,5 +105,15 @@ void tryMoveRecursive(Board* board, int piece, int row, int col, int* moves, int
     tryMoveRecursive(board, piece, row+directionRow, col+directionCol, moves, num_moves, directionRow, directionCol);
   }else if(VALID_POS(row,col) && CAN_ATTACK(board, piece, row, col)){
     moves[(*num_moves)++] = POS(row,col);
+  }
+}
+
+void print_moves(int* moves, int num_moves){
+  if (num_moves == 0) {
+    printf("no moves are possible\n");
+  }
+
+  for (size_t i = 0; i < num_moves; i++) {
+    printf("%d,%d\n", ROW(moves[i]), COL(moves[i]));
   }
 }
