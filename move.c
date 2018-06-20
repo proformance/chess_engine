@@ -9,9 +9,10 @@
 \param The current position of the piece on the board
 \return Array of possible moves
 */
-int possibleMoves(Board* board, int piece, int pos, int* moves){
+int possibleMoves(Board* board, int pos, int* moves){
   int curRow = ROW(pos);
   int curCol = COL(pos);
+  int piece = GET_PIECE_INDEX(board,pos);
   int num_moves = 0;
   int dir = DIRECTION(piece);
 

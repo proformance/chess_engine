@@ -4,7 +4,7 @@
 #include "board.h"
 #include "headers.h"
 
-int possibleMoves(Board* board, int piece, int pos, int* moves);
+int possibleMoves(Board* board, int pos, int* moves);
 void print_moves(int* moves, int num_moves);
 
 void tryMoveOnce_noAttack(Board* board, int row, int col, int* moves, int* numMoves);
