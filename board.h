@@ -43,6 +43,8 @@ enum color{
 
 #define VACANT_POS(board,row,col) (board->squares[POS(row,col)] == EMPTY)
 
+#define CAN_ATTACK(board,piece,row,col) (COLOR(board->squares[POS(row,col)]) != COLOR(piece))
+
 #define GET_PIECE(board,row,col) (board->squares[POS(row,col)])
 
 #define DIRECTION(x) (PIECE(x)==BLACK ? -1 : 1)

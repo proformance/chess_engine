@@ -87,9 +87,11 @@ bool tryMoveOnce(Board* board, int row, int col, int* moves, int* num_moves){
   return false;
 }
 
-void tryMoveRecursive(Board* board, int row, int col, int* moves, int* num_moves, int directionRow, int directionCol){
+void tryMoveRecursive(Board* board, int piece, int row, int col, int* moves, int* num_moves, int directionRow, int directionCol){
   if(VALID_POS(row,col) && VACANT_POS(board,row,col)){
     moves[(*num_moves)++] = POS(row,col);
-    tryMoveRecursive(board, row+directionRow, col+directionCol, moves, num_moves, directionRow, directionCol);
+    tryMoveRecursive(board, piece, row+directionRow, col+directionCol, moves, num_moves, directionRow, directionCol);
+  }else if(VALID_POS(row,col) && CAN_ATTACK(board, piece, row, col)){
+    moves[(*num_moves)++] = POS(row,col);
   }
 }
